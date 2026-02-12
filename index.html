@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RPG Игра</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Убираем мерцание при загрузке */
+    #root {
+      min-height: 100vh;
+    }
+    
+    /* Анимация медленной пульсации */
+    @keyframes pulse-slow {
+      0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.9;
+        transform: scale(1.02);
+      }
+    }
+    
+    .animate-pulse-slow {
+      animation: pulse-slow 2s ease-in-out infinite;
+    }
+    
+    /* Анимация мерцания для XP бара */
+    @keyframes shimmer {
+      0% {
+        transform: translateX(-100%);
+      }
+      100% {
+        transform: translateX(100%);
+      }
+    }
+    
+    .animate-shimmer {
+      animation: shimmer 3s ease-in-out infinite;
+    }
+    
+    /* Эффект свечения для иконок */
+    .drop-shadow-glow {
+      filter: drop-shadow(0 0 8px currentColor);
+    }
+    
+    /* Кастомный скроллбар */
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .scrollbar-thumb-slate-700::-webkit-scrollbar-thumb {
+      background-color: #334155;
+      border-radius: 3px;
+    }
+    
+    .scrollbar-track-slate-900::-webkit-scrollbar-track {
+      background-color: #0f172a;
+    }
+    
+    /* Анимация появления (fade in) */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    
+    .animate-fadeIn {
+      animation: fadeIn 0.3s ease-out;
+    }
+    
+    /* Анимация масштабирования (scale in) */
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    
+    .animate-scaleIn {
+      animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    
+    /* Анимация плавающих листьев */
+    @keyframes float {
+      0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 0.4;
+      }
+      25% {
+        transform: translateY(-20px) translateX(10px) rotate(90deg);
+        opacity: 0.6;
+      }
+      50% {
+        transform: translateY(-40px) translateX(-10px) rotate(180deg);
+        opacity: 0.4;
+      }
+      75% {
+        transform: translateY(-20px) translateX(10px) rotate(270deg);
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(0) translateX(0) rotate(360deg);
+        opacity: 0.4;
+      }
+    }
+    
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    /* Боевые анимации */
+    @keyframes hit-shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+    
+    .animate-hit {
+      animation: hit-shake 0.3s ease-in-out;
+    }
+    
+    @keyframes crit-flash {
+      0%, 100% { 
+        transform: scale(1);
+        filter: brightness(1);
+      }
+      50% { 
+        transform: scale(1.2);
+        filter: brightness(2) drop-shadow(0 0 20px currentColor);
+      }
+    }
+    
+    .animate-crit {
+      animation: crit-flash 0.5s ease-in-out;
+    }
+    
+    @keyframes dodge-slide {
+      0% { transform: translateX(0) translateY(0); opacity: 1; }
+      50% { transform: translateX(30px) translateY(-10px); opacity: 0.5; }
+      100% { transform: translateX(0) translateY(0); opacity: 1; }
+    }
+    
+    .animate-dodge {
+      animation: dodge-slide 0.4s ease-in-out;
+    }
+    
+    @keyframes heal-pulse {
+      0%, 100% { 
+        transform: scale(1);
+        filter: brightness(1);
+      }
+      50% { 
+        transform: scale(1.1);
+        filter: brightness(1.5) drop-shadow(0 0 15px #22c55e);
+      }
+    }
+    
+    .animate-heal {
+      animation: heal-pulse 0.6s ease-in-out;
+    }
+    
+    /* Эффект повышения уровня */
+    @keyframes level-up {
+      0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1.2) rotate(180deg);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1) rotate(360deg);
+        opacity: 1;
+      }
+    }
+    
+    .animate-level-up {
+      animation: level-up 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    
+    /* Эффект редкого дропа */
+    @keyframes rare-drop {
+      0% {
+        transform: translateY(-50px) scale(0);
+        opacity: 0;
+      }
+      60% {
+        transform: translateY(0) scale(1.2);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+    }
+    
+    .animate-rare-drop {
+      animation: rare-drop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    
+    /* Частицы */
+    @keyframes particle-float {
+      0% {
+        transform: translateY(0) translateX(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) translateX(var(--particle-x, 0)) scale(0);
+        opacity: 0;
+      }
+    }
+    
+    .animate-particle {
+      animation: particle-float 1.5s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white">
+  <div id="root"></div>
+  <script type="module" src="/main.jsx"></script>
+</body>
+</html>
