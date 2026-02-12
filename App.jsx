@@ -8941,7 +8941,7 @@ export default function App() {
                     <div 
                       className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
                       style={{
-                        backgroundImage: 'url(/forest-lake.jpg.jpg)',
+                        backgroundImage: 'url(/forest-lake.jpg)',
                         filter: 'brightness(0.8)'
                       }}
                     ></div>
