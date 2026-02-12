@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "vite build && cd dist && git init && git add -A && git commit -m 'deploy' && git push -f https://github.com/Kuzmafor/rpg-game.git main:gh-pages"
+    "deploy": "vite build && cd dist && git init && git add -A && git commit -m 'deploy' && git push -f https://github.com/Kuzmafor/rpg-game.git master:gh-pages"
   },
   "dependencies": {
     "lucide-react": "^0.263.1",
